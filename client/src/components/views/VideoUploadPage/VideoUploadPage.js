@@ -16,7 +16,8 @@ const CategoryOptions = [
     {value: 0, label: "Film & Animation"},
     {value: 1, label: "Autos & Vehicles"},
     {value: 2, label: "Music"},
-    {value: 3, label: "Pets & Animals"}
+    {value: 3, label: "Pets & Animals"},
+    {value: 4, label: "News"}
 ];
 
 function VideoUploadPage() {
@@ -24,6 +25,9 @@ function VideoUploadPage() {
     const [Description, setDescription] = useState("");
     const [Private, setPrivate] = useState(0);  // Private : 0, Public : 1
     const [Category, setCategory] = useState("Film & Animation");
+    const [FilePath, setFilePath] = useState("");
+    const [Duration, setDuration] = useState("");
+    const [ThumbnailPath, setThumbnailPath] = useState("");
 
     const onTitleChange = (event) => {
         setVedioTitle(event.currentTarget.value);
@@ -37,6 +41,7 @@ function VideoUploadPage() {
     const onCategoryChange = (event) => {
         setCategory(event.currentTarget.value);
     };
+    
     const onDrop = (files) => {
         let formData = new FormData;
         const config = {
@@ -46,7 +51,22 @@ function VideoUploadPage() {
 
         axios.post("/api/video/uploadfiles", formData, config).then(response => {
             if(response.data.success) {
-                console.log(response.data);
+
+                let thumbnail_options = {
+                    url: response.data.url,
+                    fileName: response.data.fileName
+                };
+
+                setFilePath(response.data.url);
+
+                axios.post("/api/video/thumbnail", thumbnail_options).then(response => {
+                    if(response.data.success) {
+                        setDuration(response.data.fileDuration);
+                        setThumbnailPath(response.data.url);
+                    } else {
+                        alert("Failed Make a Thumbnail.");
+                    }
+                });
             } else {
                 alert("Failed Upload Video");
             }
@@ -63,7 +83,7 @@ function VideoUploadPage() {
             <Form onSubmit>
                 <div style={{ display:"flex", justifyContent:"space-between" }}>
                     {/* Drop Zone */}
-                    <Dropzone onDrop={onDrop} multiple={false} maxSize={1048576}> 
+                    <Dropzone onDrop={onDrop} multiple={false} maxSize={300000000}> 
                         {({ getRootProps, getInputProps }) => (
                             <div style={{ width:"300px", height:"240px", border:"1px solid lightgray", display:"flex", alignItems:"center", justifyContent:"center"}} {...getRootProps()}>
                                 <input {...getInputProps()}></input>
@@ -73,9 +93,11 @@ function VideoUploadPage() {
                     </Dropzone>
 
                     {/* Thumbnail */}
-                    <div>
-                        <img src alt />
-                    </div>
+                    {ThumbnailPath &&
+                        <div>
+                            <img src={`http://localhost:5000/${ThumbnailPath}`} alt="thumbnail"></img>
+                        </div> 
+                    }
                 </div>
                 <br />
                 <br />
