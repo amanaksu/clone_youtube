@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Hello, My Friends  
 Thank you for Having interest in this repository ! 
 
@@ -14,3 +15,7 @@ If you have problem, feel free to ask me ^^
  You can watch the tutorial for this app.
 
 https://www.youtube.com/channel/UCFyXA9x8lpL3EYWeYhj4C4Q?view_as=subscriber
+=======
+# clone_youtube
+Clone Youtbue
+>>>>>>> e8c23a386982b1d5ac09e60167504475bd87ecc0
