@@ -1,10 +1,7 @@
 /node_modules
 /build
-<<<<<<< HEAD
 /uploads/*.mp4
 /uploads/thumbnails/*.png
-=======
->>>>>>> parent of 0fe62b1... Coding the Action part 2 - Thumbnail
 
 dev.js
 
