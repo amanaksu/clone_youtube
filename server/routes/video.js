@@ -72,18 +72,36 @@ router.post("/uploadVideo", (req, res) => {
 });
 
 router.get("/getVideos", (req, res) => {
-    // 비디오를 DB 에서 가져온 후 클라이언트에 보낸다. 
+    // 사용자의 모든 비디오를 DB 에서 가져온 후 클라이언트에 보낸다. 
 
-    Video.find().populate("writer").exec((error, videos) => {
-        if(error) {
-            return res.status(400).send(error);
-        } else {
-            return res.status(200).json({
-                success: true,
-                videos
-            });
-        }
-    });
+    Video.find()
+         .populate("writer")
+         .exec((error, videos) => {
+            if(error) {
+                return res.status(400).send(error);
+            } else {
+                return res.status(200).json({
+                    success: true,
+                    videos
+                });
+            }
+        });
+});
+
+router.post("/getVideoDetail", (req, res) => {
+    // 비디오를 DB 에서 가져온 수 클라이언트에 보낸다. 
+    Video.findOne({ "_id" : req.body.videoId })
+         .populate("writer")
+         .exec((error, videoDetail) => {
+            if(error) {
+                return res.status(400).send(error);
+            } else {
+                return res.status(200).json({
+                    success: true,
+                    videoDetail
+                });
+            }
+        });
 });
 
 router.post("/thumbnail", (req, res) => {
