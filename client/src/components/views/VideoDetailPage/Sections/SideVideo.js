@@ -32,9 +32,9 @@ function SideVideo() {
                 <div>
                     <a href style={{ color: "gray" }}>
                         <span style={{ fontSize: "1rem", color: "black" }}>{video.title}</span><br />
-                        <spen>{video.writer.name}</spen><br />
+                        <span>{video.writer.name}</span><br />
                         <span>{video.views}</span><br />
-                        <spen>{minutes} : {seconds}</spen>
+                        <span>{minutes} : {seconds}</span>
                     </a>
                 </div>
             </div>)

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import moment from "moment";
-import { Card, Icon, Avatar, Col, Typography, Row } from "antd";
+import { Card, Avatar, Col, Typography, Row } from "antd";
 
 
 const { Title } = Typography;

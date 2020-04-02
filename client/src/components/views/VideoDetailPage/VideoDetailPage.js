@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import SideVideo from "./Sections/SideVideo";
+import Subscribe from "./Sections/Subscribe";
 import axios from "axios";
 import { Row, Col, List, Avatar } from "antd";
 
@@ -7,14 +8,14 @@ function VideoDetailPage(props) {
 
     const [VideoDetail, setVideoDetail] = useState([]);
     
-    const config = {
-        videoId: props.match.params.videoId
-    };
-
     useEffect(() => {
+        const config = {
+            videoId: props.match.params.videoId
+        };
+        
         axios.post("/api/video/getVideoDetail", config).then(response => {
             if(response.data.success) {
-                console.log(response.data.videoDetail);
+                console.log(response.data);
                 setVideoDetail(response.data.videoDetail);
             } else {
                 alert("Failed to get Video Infomation.");
@@ -32,7 +33,7 @@ function VideoDetailPage(props) {
                         <video style={{ width: "100%" }} src={`http://localhost:5000/${VideoDetail.filePath}`} controls></video>
     
                         {/* Sub Info for Display Video */}
-                        <List.Item action>
+                        <List.Item actions={[<Subscribe userTo={VideoDetail.writer._id}></Subscribe>]}>
                             <List.Item.Meta avatar={<Avatar src={VideoDetail.writer.image}></Avatar>} title={VideoDetail.writer.name} description={VideoDetail.description}></List.Item.Meta>
                         </List.Item>
     
