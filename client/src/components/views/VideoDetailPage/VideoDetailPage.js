@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import SideVideo from "./Sections/SideVideo";
 import axios from "axios";
 import { Row, Col, List, Avatar } from "antd";
 
 function VideoDetailPage(props) {
 
-    // const videoId = props.match.params.videoId;
+    const [VideoDetail, setVideoDetail] = useState([]);
+    
     const config = {
         videoId: props.match.params.videoId
     };
-
-    const [VideoDetail, setVideoDetail] = useState([]);
 
     useEffect(() => {
         axios.post("/api/video/getVideoDetail", config).then(response => {
@@ -43,7 +43,7 @@ function VideoDetailPage(props) {
     
                 {/* SideBar */}
                 <Col lg={6} xs={24}>
-                    SideVideos
+                    <SideVideo></SideVideo>
                 </Col>
             </Row>
         );
