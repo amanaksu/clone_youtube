@@ -21,7 +21,7 @@ function VideoDetailPage(props) {
                 alert("Failed to get Video Infomation.");
             }
         });
-    }, []);
+    }, [props.match.params.videoId]);
 
     if(VideoDetail.writer) {
         return (
@@ -33,7 +33,7 @@ function VideoDetailPage(props) {
                         <video style={{ width: "100%" }} src={`http://localhost:5000/${VideoDetail.filePath}`} controls></video>
     
                         {/* Sub Info for Display Video */}
-                        <List.Item actions={[<Subscribe userTo={VideoDetail.writer._id}></Subscribe>]}>
+                        <List.Item actions={[<Subscribe userFrom={localStorage.getItem("userId")} userTo={VideoDetail.writer._id}></Subscribe>]}>
                             <List.Item.Meta avatar={<Avatar src={VideoDetail.writer.image}></Avatar>} title={VideoDetail.writer.name} description={VideoDetail.description}></List.Item.Meta>
                         </List.Item>
     
