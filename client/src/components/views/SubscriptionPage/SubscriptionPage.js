@@ -7,21 +7,24 @@ import { Card, Avatar, Col, Typography, Row } from "antd";
 const { Title } = Typography;
 const { Meta } = Card;
 
-function LandingPage() {
-
+function SubscriptionPage() {
     const [Video, setVideo] = useState([]);
-    
+
     useEffect(() => {
-        axios.get("/api/video/getVideos").then(response => {
+
+        const subscriptionConfig = {
+            userFrom: localStorage.getItem("userId")
+        };
+
+        axios.post("/api/video/getSubscriptionVideo", subscriptionConfig).then(response => {
             if(response.data.success) {
-                console.log(response.data);
+                // console.log(response.data);
                 setVideo(response.data.videos);
             } else {
                 alert("Failed to get Videos");
             }
         });
     }, []);
-
 
     const renderCards = Video.map((video, index) => {
 
@@ -49,7 +52,7 @@ function LandingPage() {
     return (
         <div style={{ width: "85", margin: "3rem auto" }}>
             <Title level={2}>
-                Recommended
+                Subscription Videos
             </Title>
             <hr />
 
@@ -62,4 +65,4 @@ function LandingPage() {
     );
 }
 
-export default LandingPage
+export default SubscriptionPage
