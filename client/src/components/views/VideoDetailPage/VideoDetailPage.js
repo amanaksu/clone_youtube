@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import SideVideo from "./Sections/SideVideo";
 import Subscribe from "./Sections/Subscribe";
+import Comment from "./Sections/Comment";
 import axios from "axios";
 import { Row, Col, List, Avatar } from "antd";
 
@@ -17,7 +18,7 @@ function VideoDetailPage(props) {
             if(response.data.success) {
                 console.log(response.data);
                 setVideoDetail(response.data.videoDetail);
-            } else {
+            } else {  
                 alert("Failed to get Video Infomation.");
             }
         });
@@ -40,6 +41,7 @@ function VideoDetailPage(props) {
                         </List.Item>
     
                         {/* Comments for Display Video */}
+                        <Comment></Comment>
     
                     </div>
                 </Col>
