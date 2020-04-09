@@ -1,22 +1,23 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router";
-import axios from "axios";
 import { useSelector } from "react-redux";
+import axios from "axios";
+import SingleComment from "./SingleComment";
 
 function Comment(props) {
     const user = useSelector(state => state.user);
     const videoId = props.match.params.videoId;
-    const [commentValue, setcommentValue] = useState("");
+    const [CommentValue, setCommentValue] = useState("");
 
     const handleClick = (event) => {
-        setcommentValue(event.currentTarget.value);
+        setCommentValue(event.currentTarget.value);
     };
 
     const onSummit = (event) => {
         event.preventDefault();
 
         const config = {
-            content: commentValue,
+            content: CommentValue,
             writer: user.userData._id, 
             postId: videoId
         };
@@ -24,6 +25,8 @@ function Comment(props) {
         axios.post("/api/comment/saveComment", config).then(response => {
             if(response.data.success) {
                 console.log(response.data.result);
+                setCommentValue("");
+                props.refreshFunction(response.data.result);
             } else {
                 alert("Failed to save comment.");
             }
@@ -37,10 +40,13 @@ function Comment(props) {
             <hr />
 
             {/* Comment Lists */}
-
+            {props.commentList && props.commentList.map((comment, index) => (
+                (!comment.responseTo && <SingleComment key={index} refreshFunction={props.refreshFunction} comment={comment}></SingleComment>)
+            ))}
+            
             {/* Root Comment Form */}
             <form style={{ display: "flex" }} onSummit={onSummit}>
-                <textarea style={{ width: "100%", borderRadius: "5px" }} onChange={handleClick} value={commentValue} placeholder="Input your comments."></textarea>
+                <textarea style={{ width: "100%", borderRadius: "5px" }} onChange={handleClick} value={CommentValue} placeholder="Input your comments."></textarea>
                 <br />
                 <button style={{ width: "20%", height: "52px" }} onClick={onSummit}>Submit</button>
             </form>

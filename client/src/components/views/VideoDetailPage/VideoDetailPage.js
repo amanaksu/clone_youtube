@@ -8,6 +8,7 @@ import { Row, Col, List, Avatar } from "antd";
 function VideoDetailPage(props) {
 
     const [VideoDetail, setVideoDetail] = useState([]);
+    const [Comments, setComments] = useState([]);
     
     useEffect(() => {
         const config = {
@@ -22,7 +23,21 @@ function VideoDetailPage(props) {
                 alert("Failed to get Video Infomation.");
             }
         });
+
+        axios.post("/api/comment/getComments", config).then(response => {
+            if(response.data.success) {
+                console.log(response.data.comments);
+                setComments(response.data.comments);
+            } else {  
+                alert("Failed to get Video Infomation.");
+            }
+        });
+
     }, [props.match.params.videoId]);
+
+    const refreshFunction = (newComments) => {
+        setComments(Comments.concat(newComments));
+    };
 
     if(VideoDetail.writer) {
         const subscribeButton = VideoDetail.writer._id !== localStorage.getItem("userId") && <Subscribe userFrom={localStorage.getItem("userId")} userTo={VideoDetail.writer._id}></Subscribe>
@@ -41,7 +56,7 @@ function VideoDetailPage(props) {
                         </List.Item>
     
                         {/* Comments for Display Video */}
-                        <Comment></Comment>
+                        <Comment refreshFunction={refreshFunction} commentList={Comments}></Comment>
     
                     </div>
                 </Col>
