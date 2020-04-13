@@ -3,6 +3,7 @@ import { withRouter } from "react-router";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import SingleComment from "./SingleComment";
+import ReplyComment from "./ReplyComment";
 
 function Comment(props) {
     const user = useSelector(state => state.user);
@@ -41,7 +42,12 @@ function Comment(props) {
 
             {/* Comment Lists */}
             {props.commentList && props.commentList.map((comment, index) => (
-                (!comment.responseTo && <SingleComment key={index} refreshFunction={props.refreshFunction} comment={comment}></SingleComment>)
+                (!comment.responseTo && 
+                    <React.Fragment>
+                        <SingleComment key={index} refreshFunction={props.refreshFunction} comment={comment}></SingleComment>
+                        <ReplyComment refreshFunction={props.refreshFunction} parentCommentId={comment._id} commentList={props.commentList}></ReplyComment>
+                    </React.Fragment>
+                )
             ))}
             
             {/* Root Comment Form */}

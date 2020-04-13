@@ -14,7 +14,7 @@ const SingleComment = (props) => {
         setOpenReply(!OpenReply);
     };
     const onHandleChange = (event) => {
-        setCommentValue(event.currentTarget.CommentValue);
+        setCommentValue(event.currentTarget.value);
     };
     const onSummit = (event) => {
         event.preventDefault();
@@ -30,6 +30,7 @@ const SingleComment = (props) => {
             if(response.data.success) {
                 console.log(response.data.result);
                 setCommentValue("");
+                setOpenReply(false);
                 props.refreshFunction(response.data.result);
             } else {
                 alert("Failed to save comment.");
