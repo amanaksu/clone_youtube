@@ -3,6 +3,7 @@ import { withRouter } from "react-router";
 import { useSelector } from "react-redux";
 import { Comment, Avatar, Button, Input } from "antd";
 import axios from "axios";
+import LikeDislikes from './LikeDislikes';
 
 const SingleComment = (props) => {
     const user = useSelector(state => state.user);
@@ -39,6 +40,7 @@ const SingleComment = (props) => {
     };
 
     const actions = [
+        <LikeDislikes userId={localStorage.getItem("userId")} commentId={props.comment._id}></LikeDislikes>,
         <span onClick={onClickOpenReply} key="comment-basic-reply-to"> Reply to </span>
     ];
 

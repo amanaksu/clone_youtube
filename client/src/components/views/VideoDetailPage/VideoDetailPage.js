@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import SideVideo from "./Sections/SideVideo";
 import Subscribe from "./Sections/Subscribe";
 import Comment from "./Sections/Comment";
+import LikeDislikes from "./Sections/LikeDislikes";
 import axios from "axios";
 import { Row, Col, List, Avatar } from "antd";
 
@@ -9,12 +10,12 @@ function VideoDetailPage(props) {
 
     const [VideoDetail, setVideoDetail] = useState([]);
     const [Comments, setComments] = useState([]);
-    
+
+    const config = {
+        videoId: props.match.params.videoId
+    };
+
     useEffect(() => {
-        const config = {
-            videoId: props.match.params.videoId
-        };
-        
         axios.post("/api/video/getVideoDetail", config).then(response => {
             if(response.data.success) {
                 console.log(response.data);
@@ -28,12 +29,13 @@ function VideoDetailPage(props) {
             if(response.data.success) {
                 console.log(response.data.comments);
                 setComments(response.data.comments);
+
             } else {  
                 alert("Failed to get Video Infomation.");
             }
         });
 
-    }, [props.match.params.videoId]);
+    }, [config]);
 
     const refreshFunction = (newComments) => {
         setComments(Comments.concat(newComments));
@@ -51,7 +53,7 @@ function VideoDetailPage(props) {
                         <video style={{ width: "100%" }} src={`http://localhost:5000/${VideoDetail.filePath}`} controls></video>
     
                         {/* Sub Info for Display Video */}
-                        <List.Item actions={[subscribeButton]}>
+                        <List.Item actions={[<LikeDislikes video userId={localStorage.getItem("userId")} videoId={props.match.params.videoId}></LikeDislikes>, subscribeButton]}>
                             <List.Item.Meta avatar={<Avatar src={VideoDetail.writer.image}></Avatar>} title={VideoDetail.writer.name} description={VideoDetail.description}></List.Item.Meta>
                         </List.Item>
     
