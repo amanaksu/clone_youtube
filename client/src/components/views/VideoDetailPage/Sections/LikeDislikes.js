@@ -56,23 +56,77 @@ const LikeDislikes = (props) => {
                 alert("Failed to get Dislikes information");
             }
         });
-    }, [config]);
+    }, [config, props.userId]);
+
+    const onLike = () => {
+        if(LikeAction === null) {
+            axios.post("/api/like/upLike", config).then(response => {
+                if(response.data.success) {
+                    setLikes(Likes + 1);
+                    setLikeAction("liked");
+
+                    if(DisLikeAction !== null) {
+                        setDisLikeAction(null);
+                        setDislikes(Dislikes - 1);
+                    }
+                } else {
+                    alert("Failed to up Like count");
+                }
+            });
+        } else {
+            axios.post("/api/like/unLike", config).then(response => {
+                if(response.data.success) {
+                    setLikes(Likes - 1);
+                    setLikeAction(null);
+                } else {
+                    alert("Failed to down Like count");
+                }
+            });
+        }
+    };
+
+    const onDislike = () => {
+        if(DisLikeAction !== null) {
+            axios.post("/api/like/unDislike", config).then(response => {
+                if(response.data.success) {
+                    setDislikes(Dislikes - 1);
+                    setDisLikeAction(null);
+                } else {
+                    alert("Failed to down DisLike count");
+                }
+            });
+        } else {
+            axios.post("/api/like/upDislike", config).then(response => {
+                if(response.data.success) {
+                    setDislikes(Dislikes + 1);
+                    setDisLikeAction("disliked");
+
+                    if(LikeAction !== null) {
+                        setLikeAction(null);
+                        setLikes(Likes - 1);
+                    }
+                } else {
+                    alert("Failed to up Dislike count");
+                }
+            });
+        }
+    };
 
     return (
         <div>
             <span key="comment-basic-like">
                 <Tooltip title="Like">
-                    <Icon type="like" theme={LikeAction === "liked" ? "filled" : "outlined"} onClick></Icon>
+                    <Icon type="like" theme={LikeAction === "liked" ? "filled" : "outlined"} onClick={onLike}></Icon>
                 </Tooltip>
                 <span style={{ paddingLeft: "8px", cursor: "auto" }}> {Likes} </span>
-            </span>
+            </span>&nbsp;&nbsp;
 
             <span key="comment-basic-dislike">
                 <Tooltip title="Dislike">
-                    <Icon type="dislike" theme={DisLikeAction === "disliked" ? "filled" : "outlined"} onClick></Icon>
+                    <Icon type="dislike" theme={DisLikeAction === "disliked" ? "filled" : "outlined"} onClick={onDislike}></Icon>
                 </Tooltip>
                 <span style={{ paddingLeft: "8px", cursor: "auto" }}> {Dislikes} </span>
-            </span>
+            </span>&nbsp;&nbsp;
         </div>
     )
 }

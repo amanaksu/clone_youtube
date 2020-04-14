@@ -18,7 +18,6 @@ function VideoDetailPage(props) {
     useEffect(() => {
         axios.post("/api/video/getVideoDetail", config).then(response => {
             if(response.data.success) {
-                console.log(response.data);
                 setVideoDetail(response.data.videoDetail);
             } else {  
                 alert("Failed to get Video Infomation.");
@@ -27,7 +26,6 @@ function VideoDetailPage(props) {
 
         axios.post("/api/comment/getComments", config).then(response => {
             if(response.data.success) {
-                console.log(response.data.comments);
                 setComments(response.data.comments);
 
             } else {  

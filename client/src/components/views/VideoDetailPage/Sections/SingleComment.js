@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { withRouter } from "react-router";
 import { useSelector } from "react-redux";
-import { Comment, Avatar, Button, Input } from "antd";
+import { Comment, Avatar } from "antd";
 import axios from "axios";
 import LikeDislikes from './LikeDislikes';
 
